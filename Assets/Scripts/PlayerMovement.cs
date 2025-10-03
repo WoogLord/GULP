@@ -4,6 +4,11 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody rb;
+    public Collider gulpMeshCollider;
+
+    public float originalRadius;
+    public Vector3 originalCenter;
+
     InputAction moveAction;
     InputAction jumpAction;
     InputAction lookAction;
@@ -12,14 +17,19 @@ public class PlayerMovement : MonoBehaviour
     public float accel = 50f;
     public float jumpAccel = 5f;
     public float jumpSpeed = 10f;
-    public int gulpedMass = 1;
     public float gulpSpeed = 5f;
+    public float gulpForce = 50f;
+    public float gulpRadius = 5f;
 
-    private float moveDir = 0f;
+    public int gulpedMass = 1;
 
     void Start()
     {
-        // rb = GetComponent<Rigidbody>();
+        if (gulpMeshCollider is SphereCollider sc)
+        {
+            originalRadius = sc.radius;
+            originalCenter = sc.center;
+        }        
         moveAction = InputSystem.actions.FindAction("Move");
         lookAction = InputSystem.actions.FindAction("Look");
         jumpAction = InputSystem.actions.FindAction("Jump");
@@ -27,8 +37,6 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Vector2 moveInput = moveAction.ReadValue<Vector2>();
-        // rb.linearVelocity = new Vector3(moveInput.y * speed, moveInput.x * speed);
         Move();
     }
 
@@ -38,36 +46,34 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(movement * speed, ForceMode.Force);
     }
 
-    private void OnTriggerEnter(Collider other){
-        if (other.ComapareTag("Gulpable")){
-            Interactable item = other.GetComponent<Gulpable>();
-            if (item != null && gulpedMass > item.mass){
-                StartCoroutine(GulpItem(item));
+    // private void OnTriggerEnter(Collider other){
+    //     if (other.CompareTag("Gulpable")){
+    //         Interactable item = other.GetComponent<Interactable>();
+    //         if (item != null && gulpedMass > item.gulpMass){
+    //             item.StartGulping(this);
+    //         }
+    //     }
+    // }
+
+    private void OnCollisionEnter(Collision collision){
+        if (collision.gameObject.CompareTag("Gulpable")){
+            Interactable item = collision.gameObject.GetComponent<Interactable>();
+            if (item != null && gulpedMass > item.gulpMass){
+                item.StartGulping(this);
             }
         }
     }
 
-    private IEnumerator GulpItem(Interactable item){
-        Transform itemTransform = item.transform;
-        Rigidbody rbItem = item.GetComponent<Rigidbody>();
+    public Vector3 GetCenter(){return transform.position;}
 
-        if (rbItem != null){
-            rbItem.isKinematic = true;
-            rbItem.detectCollisions = false;
-        }
-
-        while (Vector3.Distance(itemTransform.position, transform.position) > 0.1f){
-            itemTransform.position = Vector3.MoveTowards(
-                itemTransform.position
-                , transform.position
-                , gulpSpeed * Time.deltaTime
-            );
-            yield return null;
-        }
-
-        gulpedMass += item.mass;
-        transform.localScale = Vector3.one * Mathf/Log(gulpedMass + 1);
-
-        Destroy(item.gameObject);
+    public void GainMass(int amount){
+        gulpedMass += amount;
+        float scale = Mathf.Log(gulpedMass + 1);
+        transform.localScale = Vector3.one * scale;
+        if (gulpMeshCollider is SphereCollider sc)
+            {
+                sc.radius = originalRadius * scale;
+                sc.center = originalCenter * scale;
+            }
     }
 }
