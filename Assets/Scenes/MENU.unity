@@ -819,6 +819,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1273304569 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5628223515421359658, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
+  m_PrefabInstance: {fileID: 4772960586558308729}
+  m_PrefabAsset: {fileID: 0}
 --- !u!135 &1273304577 stripped
 SphereCollider:
   m_CorrespondingSourceObject: {fileID: 3047499717499092004, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
@@ -1071,6 +1076,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1159515546095364002, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
+      propertyPath: gulpSlime
+      value: 
+      objectReference: {fileID: 1273304569}
+    - target: {fileID: 1159515546095364002, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
       propertyPath: gulpedMass
       value: 5
       objectReference: {fileID: 0}
@@ -1078,6 +1087,18 @@ PrefabInstance:
       propertyPath: gulpMeshCollider
       value: 
       objectReference: {fileID: 1273304577}
+    - target: {fileID: 2761011977352388013, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761011977352388013, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761011977352388013, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3047499717499092004, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
       propertyPath: m_Enabled
       value: 1

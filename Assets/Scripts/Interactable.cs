@@ -14,9 +14,12 @@ public class Interactable : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isGulping || targetPlayer == null) return;
+        if (!isGulping || targetPlayer == null) return; // why?
 
-        Vector3 dir = (targetPlayer.GetCenter() - rb.position);
+        Vector3 dir = (
+            // targetPlayer.GetCenter() - 
+            rb.position
+        );
         float distance = dir.magnitude;
         dir.Normalize();
 
@@ -28,6 +31,7 @@ public class Interactable : MonoBehaviour
         {
             targetPlayer.GainMass(gulpMass);
             Destroy(gameObject); // destroy Interactable parent
+            Debug.Log("Gulped");
         }
     }
 
