@@ -84,20 +84,20 @@ public class PlayerMovement : MonoBehaviour
         gulpedMass += amount;
         
         float currScale = currGulpedMass / 10;
-        float targetScale = gulpedMass / 10;
+        float targetScale = (gulpedMass / 10);
         // transform.localScale = Vector3.one * scale;
-        gulpSlime.transform.localScale = Vector3.one * targetScale; //lerp this
+        gulpSlime.transform.localScale = (Vector3.one * targetScale) + gulpSlime.transform.localScale; //lerp this
         if (gulpMeshCollider is SphereCollider sc)
             {
-                sc.radius = originalRadius * targetScale;
-                sc.center = originalCenter * targetScale;
+                // sc.radius = originalRadius * Mathf.Log(targetScale+1);
+                // sc.center = originalCenter * Mathf.Log(targetScale+1);
             }
         foreach (Collider col in gulpSlime.GetComponentsInChildren<Collider>())
             Debug.Log($"Collider found named '{col.name}'");
             if (singleBoneColliderRef is SphereCollider sc_bones)
                 {
-                    sc_bones.radius = originalRadiusBones * targetScale;
-                    sc_bones.center = originalCenterBones * targetScale;
+                    // sc_bones.radius = originalRadiusBones * targetScale;
+                    // sc_bones.center = originalCenterBones * targetScale;
                 }
     }
 }
