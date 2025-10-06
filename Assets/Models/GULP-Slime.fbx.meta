@@ -3,7 +3,12 @@ guid: d9fa9fab2a6020f4ea7f4bff09d20b9c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BlenderMatSlime
+    second: {fileID: 2100000, guid: 9655c30e5788ba24089f2df866a96cc6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

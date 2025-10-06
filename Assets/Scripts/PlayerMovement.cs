@@ -26,8 +26,8 @@ public class PlayerMovement : MonoBehaviour
     public float gulpForce = 50f;
     public float gulpRadius = 5f;
 
-    public float gulpedMass = 1f;
-    public float currGulpedMass = 1f;
+    public float gulpedMass = 2f;
+    public float currGulpedMass = 2f;
 
     void Start()
     {
