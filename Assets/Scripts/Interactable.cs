@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    public int gulpMass = 1;
+    public int gulpMass = 1; // what is checked and added
     private bool isGulping = false;
-    private PlayerMovement targetPlayer;
+    private Player targetPlayer;
     private Rigidbody rb;
     public Collider itemMeshCollider;
 

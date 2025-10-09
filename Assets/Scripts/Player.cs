@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public Rigidbody rb;
     public Collider gulpMeshCollider;
@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        // Depreciated since i just modify scale later
         if (gulpMeshCollider is SphereCollider sc)
         {
             originalRadius = sc.radius;
@@ -41,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
             originalRadiusBones = sc_bones.radius;
             originalCenterBones = sc_bones.center;
         }        
+
+        // better way to do inputs?
         moveAction = InputSystem.actions.FindAction("Move");
         lookAction = InputSystem.actions.FindAction("Look");
         jumpAction = InputSystem.actions.FindAction("Jump");
