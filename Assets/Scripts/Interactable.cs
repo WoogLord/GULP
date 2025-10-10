@@ -14,36 +14,35 @@ public class Interactable : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!isGulping || targetPlayer == null) return; // why?
+        if (isGulping && targetPlayer != null) {
+            Vector3 dir = (
+                // targetPlayer.GetCenter() - 
+                targetPlayer.rb.position - rb.position
+            );
+            float distance = dir.magnitude;
+            dir.Normalize();
 
-        Vector3 dir = (
-            // targetPlayer.GetCenter() - 
-            rb.position
-        );
-        float distance = dir.magnitude;
-        dir.Normalize();
+            // Smooth pull toward player center
+            rb.linearVelocity = dir * Mathf.Min(targetPlayer.gulpSpeed, distance * 5f);
 
-        // Smooth pull toward player center
-        rb.linearVelocity = dir * Mathf.Min(targetPlayer.gulpSpeed, distance * 10f);
-
-        // Consume when close
-        if (distance < 0.5f)
-        {
-            targetPlayer.GainMass(gulpMass);
-            Destroy(gameObject); // destroy Interactable parent
-            Debug.Log("Gulped");
+            // Consume when close
+            if (distance < 0.5f){
+                targetPlayer.GainMass(gulpMass);
+                Destroy(gameObject); // destroy Interactable parent
+                Debug.Log("Gulped");
+                // isGulping = false;
+            }
         }
     }
 
-    public void StartGulping(PlayerMovement player)
+    public void StartGulping(Player player)
     {
-        if (isGulping) return;
-
         targetPlayer = player;
         isGulping = true;
 
         // physics settings for smooth suction
         rb.useGravity = false;
+        // rb.linearVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;

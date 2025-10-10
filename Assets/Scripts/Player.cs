@@ -26,8 +26,8 @@ public class Player : MonoBehaviour
     public float gulpForce = 50f;
     public float gulpRadius = 5f;
 
-    public float gulpedMass = 2f;
-    public float currGulpedMass = 2f;
+    public float gulpedMass = 1f;
+    public float currGulpedMass = 1f;
 
     void Start()
     {
@@ -63,33 +63,57 @@ public class Player : MonoBehaviour
         rb.AddForce(movement * moveSpeed, ForceMode.Force);
     }
 
-    // private void OnTriggerEnter(Collider other){
-    //     if (other.CompareTag("Gulpable")){
-    //         Interactable item = other.GetComponent<Interactable>();
-    //         if (item != null && gulpedMass > item.gulpMass){
-    //             item.StartGulping(this);
-    //         }
-    //     }
-    // }
-
-    private void OnCollisionEnter(Collision collision){
-        if (collision.gameObject.CompareTag("Gulpable")){
+    public void OnChildCollisionEnter(Collision collision)
+    {
+        Debug.Log($"[ChildCollisionEnter] Collided with {collision.gameObject.name}");
+        if (collision.gameObject.CompareTag("Gulpable"))
+        {
             Interactable item = collision.gameObject.GetComponent<Interactable>();
-            if (item != null && gulpedMass > item.gulpMass){
+            if (item != null && gulpedMass >= item.gulpMass)
+            {
+                Debug.Log($"Calling StartGulping on {collision.gameObject.name}");
                 item.StartGulping(this);
             }
         }
     }
 
+    // public void OnChildTriggerEnter(Collider other)
+    // {
+    //     Debug.Log($"[ChildTriggerEnter] Collided with {other.name}");
+    //     if (other.CompareTag("Gulpable"))
+    //     {
+    //         Interactable item = other.GetComponent<Interactable>();
+    //         if (item != null && gulpedMass >= item.gulpMass)
+    //         {
+    //             Debug.Log($"Calling StartGulping on {other.name}");
+    //             item.StartGulping(this);
+    //         }
+    //     }
+    // }
+
     public Vector3 GetCenter(){return transform.position;}
 
     public void GainMass(int amount){
-        gulpedMass += amount;
+        gulpedMass += amount; // curr = 1f, gulpedMass = 2f
         
-        float currScale = currGulpedMass / 10;
-        float targetScale = (gulpedMass / 10);
+        float scale = 10f;
+        float currScaleNormalized = currGulpedMass * scale; // 100f
+        float targetScaleNormalized = (gulpedMass - 1) * scale; // 200f
         // transform.localScale = Vector3.one * scale;
-        gulpSlime.transform.localScale = (Vector3.one * targetScale) + gulpSlime.transform.localScale; //lerp this
+        gulpSlime.transform.localScale = 
+            (Vector3.one * targetScaleNormalized)
+            +
+            (Vector3.one * 100f) // Reference Vector
+        ; //lerp this
+
+        rb.mass = 
+            (gulpedMass - 1) * 0.1f
+            +
+            1 // reference mass
+        ;
+
+        currGulpedMass = gulpedMass; // put in fixed update where it lerps between by linear amount
+                
         if (gulpMeshCollider is SphereCollider sc)
             {
                 // sc.radius = originalRadius * Mathf.Log(targetScale+1);
