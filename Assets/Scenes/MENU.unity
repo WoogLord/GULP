@@ -119,6 +119,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &19891367
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 19891369}
+  - component: {fileID: 19891368}
+  m_Layer: 0
+  m_Name: DEBUG
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &19891368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19891367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5fa75070bc1af4da1f39711095e4be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &19891369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19891367}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &51998214
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,6 +482,10 @@ MonoBehaviour:
   player: {fileID: 227064468}
   cameraOffset: {x: 0, y: 2, z: -4}
   cameraRotation: {x: 10, y: 0, z: 0}
+  cameraZoomMin: 1
+  startingCameraZoom: 3
+  currentCameraZoom: 0
+  cameraZoomMax: 10
 --- !u!1 &287695299
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,6 +1437,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1273304578}
     - target: {fileID: 1159515546095364002, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
+      propertyPath: Camera
+      value: 
+      objectReference: {fileID: 277920001}
+    - target: {fileID: 1159515546095364002, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
       propertyPath: gulpSlime
       value: 
       objectReference: {fileID: 1273304569}
@@ -1408,6 +1460,10 @@ PrefabInstance:
       propertyPath: singleBoneColliderRef
       value: 
       objectReference: {fileID: 303061087}
+    - target: {fileID: 3047499717499092004, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3843995578944578691, guid: 054279ef35add5a4dbfab7d9e59fb122, type: 3}
       propertyPath: m_Camera
       value: 
@@ -1485,3 +1541,4 @@ SceneRoots:
   - {fileID: 1737750968}
   - {fileID: 1573464695}
   - {fileID: 51998215}
+  - {fileID: 19891369}

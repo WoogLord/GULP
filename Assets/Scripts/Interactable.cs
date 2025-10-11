@@ -41,7 +41,7 @@ public class Interactable : MonoBehaviour
         isGulping = true;
 
         // physics settings for smooth suction
-        rb.useGravity = false;
+        // rb.useGravity = false;
         // rb.linearVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;

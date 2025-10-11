@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public Collider gulpMeshCollider;
     public Collider singleBoneColliderRef;
     public GameObject gulpSlime;
+    public CameraFollowPlayer Camera;
 
     public float originalRadius;
     public Vector3 originalCenter;
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour
     InputAction moveAction;
     InputAction jumpAction;
     InputAction lookAction;
+    InputAction zoomAction;
     InputAction debugAction;
 
     public float moveSpeed = 100f;
@@ -46,6 +48,7 @@ public class Player : MonoBehaviour
         // better way to do inputs?
         moveAction = InputSystem.actions.FindAction("Move");
         lookAction = InputSystem.actions.FindAction("Look");
+        zoomAction = InputSystem.actions.FindAction("Zoom");
         jumpAction = InputSystem.actions.FindAction("Jump");
         debugAction = InputSystem.actions.FindAction("Debug");
     }
@@ -53,6 +56,7 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         Move();
+        Look();
         if(debugAction.IsPressed())
             GainMass(1);
     }
@@ -61,6 +65,16 @@ public class Player : MonoBehaviour
         Vector2 moveInput = moveAction.ReadValue<Vector2>();
         Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
         rb.AddForce(movement * moveSpeed, ForceMode.Force);
+    }
+
+    private void Look(){
+        Vector2 lookInput = lookAction.ReadValue<Vector2>();
+        Vector2 zoomInput = zoomAction.ReadValue<Vector2>();
+        Debug.Log($"Current lookInput Value: {lookInput}");
+        Debug.Log($"Current zoomInput Value: {zoomInput}");
+
+        Camera.currentCameraZoom = Mathf.Clamp(Camera.currentCameraZoom - zoomInput.y, Camera.cameraZoomMin, Camera.cameraZoomMax);
+        Camera.rotationPressure = lookInput;
     }
 
     public void OnChildCollisionEnter(Collision collision)
