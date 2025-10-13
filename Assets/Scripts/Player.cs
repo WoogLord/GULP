@@ -24,9 +24,8 @@ public class Player : MonoBehaviour
     public float moveAccel = 50f;
     public float jumpAccel = 5f;
     public float jumpSpeed = 10f;
-    public float gulpSpeed = 5f;
     public float gulpForce = 50f;
-    public float gulpRadius = 5f;
+    public float gulpRadius = 0.25f;
 
     public float gulpedMass = 1f;
     public float currGulpedMass = 1f;

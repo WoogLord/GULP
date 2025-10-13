@@ -23,10 +23,14 @@ public class Interactable : MonoBehaviour
             dir.Normalize();
 
             // Smooth pull toward player center
-            rb.linearVelocity = dir * Mathf.Min(targetPlayer.gulpSpeed, distance * 5f);
+            // rb.linearVelocity = dir * targetPlayer.gulpForce;
+            rb.AddForce(
+                dir * Mathf.Sqrt(distance) * targetPlayer.gulpForce
+                , ForceMode.Force
+            );
 
             // Consume when close
-            if (distance < 0.5f){
+            if (distance < targetPlayer.gulpRadius){
                 targetPlayer.GainMass(gulpMass);
                 Destroy(gameObject); // destroy Interactable parent
                 Debug.Log("Gulped");
@@ -43,8 +47,8 @@ public class Interactable : MonoBehaviour
         // physics settings for smooth suction
         // rb.useGravity = false;
         // rb.linearVelocity = Vector3.zero;
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        // rb.linearVelocity = Vector3.zero;
+        // rb.angularVelocity = Vector3.zero;
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
 
