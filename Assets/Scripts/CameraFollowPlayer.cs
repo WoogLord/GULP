@@ -2,37 +2,78 @@ using UnityEngine;
 
 public class CameraFollowPlayer : MonoBehaviour
 {
+    [Header("Refs")]
     public Rigidbody yposBoneRb;
     public Player player;
-    public Vector3 cameraOffset = new Vector3(0f, 2f, -4f);
-    public Vector3 cameraRotation = new Vector3(10f, 0f, 0f);
+
+    [Header("Cam vectors")]
+    public Vector3 cameraOffset = new Vector3(0f, 1f, -5f);
+    // public Vector3 cameraRotation = new Vector3(10f, 0f, 0f);
+    public Vector3 rotationPressure = new Vector3(0f, 0f, 0f);
+
+    [Header("Zoom")]
     public float cameraZoomMin = 1f;
     public float startingCameraZoom = 3f;
     public float currentCameraZoom;
     public float cameraZoomMax = 10f;
-    public Vector3 rotationPressure = new Vector3(0f, 0f, 0f);
+    public float zoomSpeed = 5f;
+
+    [Header("Rotation")]
+    public float senseX = 120f;
+    public float senseY = 120f;
+    public float minPitch = -25f;
+    public float maxPitch = 35f;
+
+    [Header("Lerping")]
+    public float followLerpSpeed = 20f;
+    private float yaw = 0f;
+    private float pitch = 0f;
 
     void Start(){
         currentCameraZoom = startingCameraZoom;
-        transform.rotation = Quaternion.Euler(cameraRotation);
+        // yaw = cameraRotation.y;
+        // pitch = cameraRotation.x;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        // transform.rotation = Quaternion.Euler(cameraRotation);
     }
 
-    void FixedUpdate(){
+    void LateUpdate(){
         float gulpedMassOffset = (((player.gulpedMass - 1f) * 0.1f) + 1f);
         float zoomScale = (currentCameraZoom / startingCameraZoom);
-        transform.position = new Vector3(
-            yposBoneRb.position.x + (cameraOffset.x * gulpedMassOffset * zoomScale)
-            , yposBoneRb.position.y + (cameraOffset.y * gulpedMassOffset * zoomScale)
-            , yposBoneRb.position.z + (cameraOffset.z * gulpedMassOffset * zoomScale)
+
+        // transform.position = new Vector3(
+        //     yposBoneRb.position.x + (cameraOffset.x * gulpedMassOffset * zoomScale)
+        //     , yposBoneRb.position.y + (cameraOffset.y * gulpedMassOffset * zoomScale)
+        //     , yposBoneRb.position.z + (cameraOffset.z * gulpedMassOffset * zoomScale)
+        // );
+
+        // cameraRotation.x = Mathf.Clamp(cameraRotation.x - rotationPressure.y, -30f, 30f);
+        // cameraRotation.y = Mathf.Clamp(cameraRotation.y + rotationPressure.x, -180f, 180f);
+
+        // transform.rotation = Quaternion.Euler(new Vector3(
+        //     cameraRotation.x
+        //     , cameraRotation.y
+        //     , cameraRotation.z
+        // ));
+
+        // New code below
+        currentCameraZoom = Mathf.Lerp(currentCameraZoom
+            , Mathf.Clamp(currentCameraZoom, cameraZoomMin, cameraZoomMax)
+            , zoomSpeed * Time.deltaTime
         );
 
-        cameraRotation.x = Mathf.Clamp(cameraRotation.x - rotationPressure.y, -30f, 30f);
-        cameraRotation.y = Mathf.Clamp(cameraRotation.y + rotationPressure.x, -180f, 180f);
+        yaw += rotationPressure.x * senseX * Time.deltaTime; // (player.usingController ? Time.deltaTime : 1f)
+        pitch -= rotationPressure.y * senseY * Time.deltaTime;
+        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-        transform.rotation = Quaternion.Euler(new Vector3(
-            cameraRotation.x
-            , cameraRotation.y
-            , cameraRotation.z
-        ));
+        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
+        Vector3 scaledOffset = rotation * (cameraOffset * gulpedMassOffset * zoomScale);
+        Vector3 desiredPosition = yposBoneRb.position + scaledOffset;
+
+        transform.position = Vector3.Lerp(transform.position, desiredPosition, followLerpSpeed * Time.deltaTime);
+        transform.rotation = rotation;
     }
 }

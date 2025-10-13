@@ -49,6 +49,7 @@ MonoBehaviour:
   gulpMeshCollider: {fileID: 3047499717499092004}
   singleBoneColliderRef: {fileID: 7232162631358676661}
   gulpSlime: {fileID: 5628223515421359658}
+  Camera: {fileID: 0}
   originalRadius: 0
   originalCenter: {x: 0, y: 0, z: 0}
   originalRadiusBones: 0
@@ -57,9 +58,9 @@ MonoBehaviour:
   moveAccel: 50
   jumpAccel: 5
   jumpSpeed: 10
-  gulpSpeed: 5
   gulpForce: 50
   gulpRadius: 5
+  lookLerpSpeed: 20
   gulpedMass: 2
   currGulpedMass: 2
 --- !u!1 &8827358674729376400

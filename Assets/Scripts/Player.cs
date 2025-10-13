@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public Vector3 originalCenter;
     public float originalRadiusBones;
     public Vector3 originalCenterBones;
+    private Vector2 lerpedLook;
 
     InputAction moveAction;
     InputAction jumpAction;
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour
     public float jumpSpeed = 10f;
     public float gulpForce = 50f;
     public float gulpRadius = 0.25f;
+    public float lookLerpSpeed = 20f;
 
     public float gulpedMass = 1f;
     public float currGulpedMass = 1f;
@@ -58,6 +60,12 @@ public class Player : MonoBehaviour
         Look();
         if(debugAction.IsPressed())
             GainMass(1);
+
+        // to make the character roll
+        // transform.Rotate(movement * moveSpeed * Time.deltaTime);
+        // foreach (Transform child in transform){
+        //     Rigidbody childRb = child.GetComponent<Rigidbody>();
+        // }
     }
 
     private void Move(){
@@ -72,8 +80,12 @@ public class Player : MonoBehaviour
         Debug.Log($"Current lookInput Value: {lookInput}");
         Debug.Log($"Current zoomInput Value: {zoomInput}");
 
-        Camera.currentCameraZoom = Mathf.Clamp(Camera.currentCameraZoom - zoomInput.y, Camera.cameraZoomMin, Camera.cameraZoomMax);
-        Camera.rotationPressure = lookInput;
+        lerpedLook = Vector2.Lerp(lerpedLook, lookInput, lookLerpSpeed * Time.deltaTime);
+
+        Camera.currentCameraZoom = Mathf.Clamp(Camera.currentCameraZoom - zoomInput.y
+            , Camera.cameraZoomMin
+            , Camera.cameraZoomMax);
+        Camera.rotationPressure = lerpedLook;
     }
 
     public void OnChildCollisionEnter(Collision collision)
