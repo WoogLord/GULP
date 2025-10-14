@@ -208,18 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gulpedMassText: {fileID: 1127044210}
-  player: {fileID: 227064468}
---- !u!114 &227064468 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6368317643643409461, guid: 208ebd72756141641ac4a613f8bbe0cd, type: 3}
-  m_PrefabInstance: {fileID: 2882278630699269642}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f9e7a9e71591654ab2ea61a946c3152, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  player: {fileID: 760260893}
 --- !u!1 &247557247
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,6 +471,9 @@ MonoBehaviour:
   yposBoneRb: {fileID: 854050213}
   player: {fileID: 760260893}
   cameraOffset: {x: 0, y: 1, z: -5}
+  scaledOffset: {x: 0, y: 0, z: 0}
+  desiredPosition: {x: 0, y: 0, z: 0}
+  cameraRotation: {x: 0, y: 0, z: 0}
   rotationPressure: {x: 0, y: 0, z: 0}
   cameraZoomMin: 1
   startingCameraZoom: 3

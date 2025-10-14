@@ -8,7 +8,9 @@ public class CameraFollowPlayer : MonoBehaviour
 
     [Header("Cam vectors")]
     public Vector3 cameraOffset = new Vector3(0f, 1f, -5f);
-    // public Vector3 cameraRotation = new Vector3(10f, 0f, 0f);
+    public Vector3 scaledOffset;
+    public Vector3 desiredPosition;
+    public Vector3 cameraRotation;
     public Vector3 rotationPressure = new Vector3(0f, 0f, 0f);
 
     [Header("Zoom")]
@@ -38,11 +40,18 @@ public class CameraFollowPlayer : MonoBehaviour
         Cursor.visible = false;
 
         // transform.rotation = Quaternion.Euler(cameraRotation);
+        yposBoneRb.interpolation = RigidbodyInterpolation.Interpolate;
+    }
+
+    void FixedUpdate(){
+        float gulpedMassOffset = (((player.gulpedMass - 1f) * 0.1f) + 1f);
+        float zoomScale = (currentCameraZoom / startingCameraZoom);
+
+        scaledOffset = Quaternion.Euler(cameraRotation) * (cameraOffset * gulpedMassOffset * zoomScale);
+        desiredPosition = yposBoneRb.position + scaledOffset;
     }
 
     void LateUpdate(){
-        float gulpedMassOffset = (((player.gulpedMass - 1f) * 0.1f) + 1f);
-        float zoomScale = (currentCameraZoom / startingCameraZoom);
 
         // transform.position = new Vector3(
         //     yposBoneRb.position.x + (cameraOffset.x * gulpedMassOffset * zoomScale)
@@ -69,11 +78,10 @@ public class CameraFollowPlayer : MonoBehaviour
         pitch -= rotationPressure.y * senseY * Time.deltaTime;
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
-        Vector3 scaledOffset = rotation * (cameraOffset * gulpedMassOffset * zoomScale);
-        Vector3 desiredPosition = yposBoneRb.position + scaledOffset;
+        cameraRotation = new Vector3 (pitch, yaw, 0f);
 
         transform.position = Vector3.Lerp(transform.position, desiredPosition, followLerpSpeed * Time.deltaTime);
-        transform.rotation = rotation;
+        // transform.position = desiredPosition;
+        transform.rotation = Quaternion.Euler(cameraRotation);
     }
 }
